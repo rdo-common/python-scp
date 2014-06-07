@@ -8,7 +8,7 @@
 
 Name:           python-%{srcname}
 Version:        0.7.1
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Scp module for paramiko
 
 License:        LGPLv2+
@@ -51,6 +51,9 @@ rm -r %{srcname}.egg-info
 
 
 %changelog
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.7.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Wed Feb 19 2014 Orion Poplawski <orion@cora.nwra.com> - 0.7.1-3
 - Add missing BR python-paramiko for tests
 
