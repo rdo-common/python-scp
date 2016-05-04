@@ -5,10 +5,11 @@
 %endif
 
 %global srcname scp
+%global pypi_name scp
 
 Name:           python-%{srcname}
-Version:        0.7.1
-Release:        6%{?dist}
+Version:        0.10.2
+Release:        1%{?dist}
 Summary:        Scp module for paramiko
 
 License:        LGPLv2+
@@ -16,41 +17,77 @@ URL:            https://github.com/jbardin/scp.py
 Source0:        https://pypi.python.org/packages/source/s/%{srcname}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
-BuildRequires:  python2-devel
+
 BuildRequires:  python-setuptools
+BuildRequires:  python2-devel
+
+BuildRequires:  python3-setuptools
+BuildRequires:  python3-devel
+
 # For tests
-BuildRequires:  python-paramiko
-Requires:       python-paramiko
+BuildRequires: python-paramiko, python3-paramiko
 
 %description
 The scp.py module uses a paramiko transport to send and receive files via the
 scp1 protocol. This is the protocol as referenced from the openssh scp program,
 and has only been tested with this implementation.
 
+%package -n     python2-%{pypi_name}
+Summary:        scp module for paramiko
+%{?python_provide:%python_provide python2-%{pypi_name}}
+
+Requires:       python-paramiko
+%description -n python2-%{pypi_name}
+The scp.py module uses a paramiko transport to send and receive files via the
+scp1 protocol. This is the protocol as referenced from the openssh scp program,
+and has only been tested with this implementation.
+
+%package -n     python3-%{pypi_name}
+Summary:        scp module for paramiko
+%{?python_provide:%python_provide python3-%{pypi_name}}
+
+Requires:       python3-paramiko
+%description -n python3-%{pypi_name}
+The scp.py module uses a paramiko transport to send and receive files via the
+scp1 protocol. This is the protocol as referenced from the openssh scp program,
+and has only been tested with this implementation.
 
 %prep
 %setup -q -n %{srcname}-%{version}
 rm -r %{srcname}.egg-info
 
-
 %build
-%{__python2} setup.py build
-
+%py2_build
+%py3_build
 
 %install
-%{__python2} setup.py install --skip-build --root %{buildroot}
-
+%py3_install
+%py2_install
 
 %check
 %{__python2} setup.py test
+%{__python3} setup.py test
 
- 
-%files
-%doc LICENSE.txt PKG-INFO README.md
-%{python2_sitelib}/*
+%files -n python2-%{pypi_name}
+%doc README.rst PKG-INFO
+%license LICENSE.txt
+%{python2_sitelib}/%{pypi_name}.py*
+%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
+%files -n python3-%{pypi_name}
+%doc README.rst PKG-INFO
+%license LICENSE.txt
+%dir %{python3_sitelib}/__pycache__/
+%{python3_sitelib}/__pycache__/*
+%{python3_sitelib}/%{pypi_name}.py
+%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Tue May 03 2016 Ben Rosser <rosser.bjr@gmail.com> - 0.10.2-1
+- Updated package to latest upstream version.
+- Modernized spec file.
+- Added support for Python 3.
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 0.7.1-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
