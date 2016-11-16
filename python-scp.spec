@@ -9,7 +9,7 @@
 
 Name:           python-%{srcname}
 Version:        0.10.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Scp module for paramiko
 
 License:        LGPLv2+
@@ -77,12 +77,14 @@ rm -r %{srcname}.egg-info
 %files -n python3-%{pypi_name}
 %doc README.rst PKG-INFO
 %license LICENSE.txt
-%dir %{python3_sitelib}/__pycache__/
 %{python3_sitelib}/__pycache__/*
 %{python3_sitelib}/%{pypi_name}.py
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Wed Nov 16 2016 Ben Rosser <rosser.bjr@gmail.com> - 0.10.2-3
+- Remove ownership of python3_sitelib/__pycache__ from the python3 subpackage.
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.10.2-2
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
