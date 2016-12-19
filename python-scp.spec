@@ -9,7 +9,7 @@
 
 Name:           python-%{srcname}
 Version:        0.10.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Scp module for paramiko
 
 License:        LGPLv2+
@@ -82,6 +82,9 @@ rm -r %{srcname}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 0.10.2-4
+- Rebuild for Python 3.6
+
 * Wed Nov 16 2016 Ben Rosser <rosser.bjr@gmail.com> - 0.10.2-3
 - Remove ownership of python3_sitelib/__pycache__ from the python3 subpackage.
 
