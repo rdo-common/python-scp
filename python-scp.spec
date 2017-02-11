@@ -9,7 +9,7 @@
 
 Name:           python-%{srcname}
 Version:        0.10.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Scp module for paramiko
 
 License:        LGPLv2+
@@ -82,6 +82,9 @@ rm -r %{srcname}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.10.2-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 0.10.2-4
 - Rebuild for Python 3.6
 
