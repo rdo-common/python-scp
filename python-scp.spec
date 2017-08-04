@@ -1,3 +1,7 @@
+%if 0%{?fedora}
+%global with_python3 1
+%endif
+
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?__python2: %global __python2 /usr/bin/python2}
 %{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -21,11 +25,8 @@ BuildArch:      noarch
 BuildRequires:  python-setuptools
 BuildRequires:  python2-devel
 
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-devel
-
 # For tests
-BuildRequires: python-paramiko, python3-paramiko
+BuildRequires: python-paramiko
 
 %description
 The scp.py module uses a paramiko transport to send and receive files via the
@@ -42,15 +43,20 @@ The scp.py module uses a paramiko transport to send and receive files via the
 scp1 protocol. This is the protocol as referenced from the openssh scp program,
 and has only been tested with this implementation.
 
+%if 0%{?with_python3}
 %package -n     python3-%{pypi_name}
 Summary:        scp module for paramiko
 %{?python_provide:%python_provide python3-%{pypi_name}}
+BuildRequires:  python3-setuptools
+BuildRequires:  python3-devel
+BuildRequires:  python3-paramiko
 
 Requires:       python3-paramiko
 %description -n python3-%{pypi_name}
 The scp.py module uses a paramiko transport to send and receive files via the
 scp1 protocol. This is the protocol as referenced from the openssh scp program,
 and has only been tested with this implementation.
+%endif
 
 %prep
 %setup -q -n %{srcname}-%{version}
@@ -58,15 +64,21 @@ rm -r %{srcname}.egg-info
 
 %build
 %py2_build
+%if 0%{?with_python3}
 %py3_build
+%endif
 
 %install
+%if 0%{?with_python3}
 %py3_install
+%endif
 %py2_install
 
 %check
 %{__python2} setup.py test
+%if 0%{?with_python3}
 %{__python3} setup.py test
+%endif
 
 %files -n python2-%{pypi_name}
 %doc README.rst PKG-INFO
@@ -74,12 +86,14 @@ rm -r %{srcname}.egg-info
 %{python2_sitelib}/%{pypi_name}.py*
 %{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
+%if 0%{?with_python3}
 %files -n python3-%{pypi_name}
 %doc README.rst PKG-INFO
 %license LICENSE.txt
 %{python3_sitelib}/__pycache__/*
 %{python3_sitelib}/%{pypi_name}.py
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%endif
 
 %changelog
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.10.2-6
